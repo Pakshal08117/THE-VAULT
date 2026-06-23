@@ -58,8 +58,8 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <AuthLayout title="Create Vault" subtitle="Establish your secure digital repository">
-      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <AuthLayout title="Create Your Vault" subtitle="Build your secure digital sanctuary">
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         {(error || localError) && (
           <div role="alert" className="mb-4 flex items-start gap-3 rounded-lg border border-vault-rose/20 bg-vault-rose/5 p-3 text-sm text-vault-rose">
             <AlertCircle size={18} className="shrink-0 mt-0.5" />
@@ -72,7 +72,7 @@ export const Register: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4" aria-label="Register form">
           <div>
-            <label className="block text-xs font-semibold text-vault-400">Pen Name / Username</label>
+            <label htmlFor="register-username" className="block text-xs font-semibold text-vault-400">Pen Name / Username</label>
             <div className="relative mt-2">
               <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
                 <User size={16} />
@@ -83,13 +83,14 @@ export const Register: React.FC = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="AestheticPoet"
-                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
+                className="w-full rounded-2xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none transition"
+                autoComplete="username"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-vault-400">Email</label>
+            <label htmlFor="register-email" className="block text-xs font-semibold text-vault-400">Email</label>
             <div className="relative mt-2">
               <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
                 <Mail size={16} />
@@ -100,13 +101,14 @@ export const Register: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@domain.com"
-                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
+                className="w-full rounded-2xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none transition"
+                autoComplete="email"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-vault-400">Password</label>
+            <label htmlFor="register-password" className="block text-xs font-semibold text-vault-400">Password</label>
             <div className="relative mt-2">
               <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
                 <KeyRound size={16} />
@@ -117,7 +119,8 @@ export const Register: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Create master password"
-                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
+                className="w-full rounded-2xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none transition"
+                autoComplete="new-password"
               />
               <button
                 type="button"
@@ -131,33 +134,33 @@ export const Register: React.FC = () => {
 
             <div className="mt-3 rounded-lg border border-vault-800 bg-vault-900/30 p-3 text-sm">
               <div className="mb-2 text-xs font-semibold text-vault-400">Password Requirements</div>
-              <ul className="space-y-1 text-sm">
+              <ul className="grid grid-cols-1 gap-2 text-sm">
                 <li className={`flex items-center gap-2 ${pwChecks.upper ? 'text-vault-gold' : 'text-vault-500'}`}>
-                  <span className="h-4 w-4 shrink-0 rounded-sm bg-[color:var(--color-check-bg,transparent)] flex items-center justify-center">{pwChecks.upper ? '✓' : '•'}</span>
-                  <span>Uppercase letter</span>
+                  <span className={`grid h-5 w-5 place-items-center rounded-sm ${pwChecks.upper ? 'bg-vault-gold text-black' : 'bg-transparent'}`}>{pwChecks.upper ? '✓' : '•'}</span>
+                  Uppercase letter
                 </li>
                 <li className={`flex items-center gap-2 ${pwChecks.lower ? 'text-vault-gold' : 'text-vault-500'}`}>
-                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.lower ? '✓' : '•'}</span>
-                  <span>Lowercase letter</span>
+                  <span className={`grid h-5 w-5 place-items-center rounded-sm ${pwChecks.lower ? 'bg-vault-gold text-black' : 'bg-transparent'}`}>{pwChecks.lower ? '✓' : '•'}</span>
+                  Lowercase letter
                 </li>
                 <li className={`flex items-center gap-2 ${pwChecks.number ? 'text-vault-gold' : 'text-vault-500'}`}>
-                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.number ? '✓' : '•'}</span>
-                  <span>Number</span>
+                  <span className={`grid h-5 w-5 place-items-center rounded-sm ${pwChecks.number ? 'bg-vault-gold text-black' : 'bg-transparent'}`}>{pwChecks.number ? '✓' : '•'}</span>
+                  Number
                 </li>
                 <li className={`flex items-center gap-2 ${pwChecks.special ? 'text-vault-gold' : 'text-vault-500'}`}>
-                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.special ? '✓' : '•'}</span>
-                  <span>Special character</span>
+                  <span className={`grid h-5 w-5 place-items-center rounded-sm ${pwChecks.special ? 'bg-vault-gold text-black' : 'bg-transparent'}`}>{pwChecks.special ? '✓' : '•'}</span>
+                  Special character
                 </li>
                 <li className={`flex items-center gap-2 ${pwChecks.length ? 'text-vault-gold' : 'text-vault-500'}`}>
-                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.length ? '✓' : '•'}</span>
-                  <span>Minimum 8 characters</span>
+                  <span className={`grid h-5 w-5 place-items-center rounded-sm ${pwChecks.length ? 'bg-vault-gold text-black' : 'bg-transparent'}`}>{pwChecks.length ? '✓' : '•'}</span>
+                  Minimum 8 characters
                 </li>
               </ul>
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-vault-400">Confirm Password</label>
+            <label htmlFor="register-confirm" className="block text-xs font-semibold text-vault-400">Confirm Password</label>
             <div className="relative mt-2">
               <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
                 <ShieldCheck size={16} />
@@ -168,18 +171,25 @@ export const Register: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter password"
-                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
+                className="w-full rounded-2xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none transition"
+                autoComplete="new-password"
               />
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-vault-gold/95 to-vault-gold/80 py-3 text-sm font-semibold text-black shadow-lg hover:scale-[1.01] active:scale-100 transition-transform disabled:opacity-60"
-          >
-            {isSubmitting ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" /> : 'Create Vault'}
-          </button>
+          <div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-vault-gold/95 to-vault-gold/80 py-3 px-4 text-sm font-semibold text-black shadow-[0_10px_30px_rgba(212,175,55,0.18)] hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-60"
+            >
+              {isSubmitting ? (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+              ) : (
+                'CREATE VAULT'
+              )}
+            </button>
+          </div>
         </form>
 
         <div className="mt-4 text-center text-sm text-vault-500">
