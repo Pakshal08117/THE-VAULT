@@ -46,11 +46,59 @@
 }
 
 @layer base {
+  :root {
+    --vault-body-font: Inter, system-ui, sans-serif;
+    --vault-heading-font: "Playfair Display", Georgia, serif;
+    --vault-h1-font: "Playfair Display", Georgia, serif;
+    --vault-h2-font: "Cormorant Garamond", Georgia, serif;
+    --vault-h3-font: "Merriweather", Georgia, serif;
+    --vault-title-font: "Playfair Display", Georgia, serif;
+    --vault-mono-font: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    --vault-font-size: 16px;
+    --vault-line-height: 1.75;
+    --vault-letter-spacing: 0.01em;
+    --vault-content-width: 780px;
+  }
+
+  html {
+    font-family: var(--vault-body-font);
+    font-size: 16px;
+  }
+
   body {
+    font-family: var(--vault-body-font);
+    font-size: var(--vault-font-size);
+    line-height: var(--vault-line-height);
+    letter-spacing: var(--vault-letter-spacing);
     background-color: #09090b;
     color: #f4f4f5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--vault-heading-font);
+  }
+
+  h1 { font-family: var(--vault-h1-font); }
+  h2 { font-family: var(--vault-h2-font); }
+  h3 { font-family: var(--vault-h3-font); }
+  .title-font { font-family: var(--vault-title-font); }
+  .mono-font { font-family: var(--vault-mono-font); }
+
+  .vault-focus-mode main {
+    max-width: calc(var(--vault-content-width) + 4rem);
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .typography-preview {
+    font-family: var(--vault-body-font);
+    font-size: var(--vault-font-size);
+    line-height: var(--vault-line-height);
+    letter-spacing: var(--vault-letter-spacing);
   }
 }
 

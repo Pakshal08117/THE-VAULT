@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { VaultProvider } from './context/VaultContext';
+import { TypographyProvider } from './context/TypographyContext';
+import { useTypography } from './hooks/useTypography';
 import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 import { Sidebar } from './components/Sidebar';
 import { OmniSearch } from './components/OmniSearch';
@@ -29,6 +31,7 @@ import './App.css';
 const AppShell: React.FC = () => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { preferences } = useTypography();
 
   // Global Keyboard Shortcuts
   useEffect(() => {
@@ -54,7 +57,7 @@ const AppShell: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen w-screen flex-col bg-[#09090b] text-[#f4f4f5] md:flex-row">
+    <div className={`flex min-h-screen w-screen flex-col bg-[#09090b] text-[#f4f4f5] md:flex-row ${preferences.focusMode ? 'md:overflow-hidden' : ''}`}>
       <Routes>
         {/* Public auth pages */}
         <Route
@@ -84,7 +87,7 @@ const AppShell: React.FC = () => {
             <ProtectedRoute>
               <div className="flex min-h-screen w-screen flex-col md:flex-row">
                 {/* Sidebar Navigation */}
-                <Sidebar onSearchOpen={() => setIsSearchOpen(true)} />
+                {!preferences.focusMode && <Sidebar onSearchOpen={() => setIsSearchOpen(true)} />}
 
                 {/* Main Content Area */}
                 <main className="flex-1 overflow-y-auto bg-gradient-to-b from-vault-950 via-vault-950 to-vault-900">
@@ -119,9 +122,11 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <VaultProvider>
-          <AppShell />
-        </VaultProvider>
+        <TypographyProvider>
+          <VaultProvider>
+            <AppShell />
+          </VaultProvider>
+        </TypographyProvider>
       </AuthProvider>
     </BrowserRouter>
   );

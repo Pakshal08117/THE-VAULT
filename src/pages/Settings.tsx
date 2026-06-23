@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useVault } from '../context/VaultContext';
-import { Settings as SettingsIcon, Save, ShieldAlert, Sparkles, Database, RefreshCw, Trash2, Check } from 'lucide-react';
+import TypographySettings from '../components/settings/TypographySettings';
+import { Save, Sparkles, Database, RefreshCw, Trash2, Check } from 'lucide-react';
 import { WritingType } from '../types';
 
 export const SettingsPage: React.FC = () => {
@@ -79,8 +80,9 @@ export const SettingsPage: React.FC = () => {
             <div className="grid gap-4 sm:grid-cols-2">
               {/* Default writing type */}
               <div className="space-y-1.5 text-left">
-                <label className="text-[9px] font-bold uppercase tracking-wider text-vault-500">Default Writing Format</label>
+                <label htmlFor="default-content-type" className="text-[9px] font-bold uppercase tracking-wider text-vault-500">Default Writing Format</label>
                 <select
+                  id="default-content-type"
                   value={defaultContentType}
                   onChange={(e) => setDefaultContentType(e.target.value as WritingType)}
                   className="w-full rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 text-xs text-zinc-200 outline-none"
@@ -96,8 +98,9 @@ export const SettingsPage: React.FC = () => {
 
               {/* Auto save */}
               <div className="space-y-1.5 text-left">
-                <label className="text-[9px] font-bold uppercase tracking-wider text-vault-500">Auto-save Interval</label>
+                <label htmlFor="auto-save-interval" className="text-[9px] font-bold uppercase tracking-wider text-vault-500">Auto-save Interval</label>
                 <select
+                  id="auto-save-interval"
                   value={autoSaveInterval}
                   onChange={(e) => setAutoSaveInterval(Number(e.target.value))}
                   className="w-full rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 text-xs text-zinc-200 outline-none"
@@ -164,6 +167,8 @@ export const SettingsPage: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <TypographySettings />
         </div>
 
         {/* Security and Backup (Right Column) */}
@@ -181,6 +186,7 @@ export const SettingsPage: React.FC = () => {
               <span className="text-[10px] font-bold uppercase tracking-wider text-vault-400">AES-256-GCM status</span>
               <button
                 onClick={() => setEnableE2E(!enableE2E)}
+                aria-label="Toggle AES-256-GCM encryption"
                 className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out ${
                   enableE2E ? 'bg-vault-emerald' : 'bg-vault-800'
                 }`}
