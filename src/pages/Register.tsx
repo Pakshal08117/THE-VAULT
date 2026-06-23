@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { KeyRound, Mail, User, AlertCircle, ShieldCheck } from 'lucide-react';
+import AuthLayout from '../components/AuthLayout';
+import { motion } from 'framer-motion';
 
 export const Register: React.FC = () => {
   const { register, error, clearError } = useAuth();
@@ -12,6 +14,17 @@ export const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const pwChecks = useMemo(() => {
+    return {
+      length: password.length >= 8,
+      upper: /[A-Z]/.test(password),
+      lower: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[^A-Za-z0-9]/.test(password)
+    };
+  }, [password]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,20 +58,10 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 py-12">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-vault-800 bg-vault-950 p-8 shadow-2xl premium-glow animate-slide-up">
-        {/* Brand Head */}
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-vault-gold bg-gradient-to-br from-vault-900 to-vault-800 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-            <span className="font-serif text-2xl font-bold text-vault-gold">V</span>
-          </div>
-          <h2 className="font-serif text-2xl font-bold tracking-widest text-[#f4f4f5]">CREATE VAULT</h2>
-          <p className="mt-1 text-xs text-vault-500 uppercase tracking-widest">Establish your secure digital repository</p>
-        </div>
-
-        {/* Error Feedback */}
+    <AuthLayout title="Create Vault" subtitle="Establish your secure digital repository">
+      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         {(error || localError) && (
-          <div className="mb-6 flex items-start gap-3 rounded-xl border border-vault-rose/20 bg-vault-rose/5 p-4 text-sm text-vault-rose">
+          <div role="alert" className="mb-4 flex items-start gap-3 rounded-lg border border-vault-rose/20 bg-vault-rose/5 p-3 text-sm text-vault-rose">
             <AlertCircle size={18} className="shrink-0 mt-0.5" />
             <div className="text-left">
               <p className="font-semibold">Creation Failed</p>
@@ -67,103 +70,127 @@ export const Register: React.FC = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-left">
-          {/* Username Input */}
-          <div className="space-y-1">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-vault-500">Pen Name / Username</label>
-            <div className="relative flex items-center rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 transition focus-within:border-vault-gold">
-              <User size={16} className="mr-3 text-vault-500" />
+        <form onSubmit={handleSubmit} className="space-y-4" aria-label="Register form">
+          <div>
+            <label className="block text-xs font-semibold text-vault-400">Pen Name / Username</label>
+            <div className="relative mt-2">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
+                <User size={16} />
+              </div>
               <input
+                id="register-username"
                 type="text"
-                placeholder="AestheticPoet"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-zinc-100 placeholder-vault-600 outline-none"
+                placeholder="AestheticPoet"
+                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
               />
             </div>
           </div>
 
-          {/* Email Input */}
-          <div className="space-y-1">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-vault-500">Email Address</label>
-            <div className="relative flex items-center rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 transition focus-within:border-vault-gold">
-              <Mail size={16} className="mr-3 text-vault-500" />
+          <div>
+            <label className="block text-xs font-semibold text-vault-400">Email</label>
+            <div className="relative mt-2">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
+                <Mail size={16} />
+              </div>
               <input
+                id="register-email"
                 type="email"
-                placeholder="writer@thevault.app"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-zinc-100 placeholder-vault-600 outline-none"
+                placeholder="you@domain.com"
+                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
               />
             </div>
           </div>
 
-          {/* Password Input */}
-          <div className="space-y-1">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-vault-500">Master Password</label>
-            <div className="relative flex items-center rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 transition focus-within:border-vault-gold">
-              <KeyRound size={16} className="mr-3 text-vault-500" />
+          <div>
+            <label className="block text-xs font-semibold text-vault-400">Password</label>
+            <div className="relative mt-2">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
+                <KeyRound size={16} />
+              </div>
               <input
-                type="password"
-                placeholder="Minimum 8 characters"
+                id="register-password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-zinc-100 placeholder-vault-600 outline-none"
+                placeholder="Create master password"
+                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((s) => !s)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-vault-500 hover:text-vault-gold"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+
+            <div className="mt-3 rounded-lg border border-vault-800 bg-vault-900/30 p-3 text-sm">
+              <div className="mb-2 text-xs font-semibold text-vault-400">Password Requirements</div>
+              <ul className="space-y-1 text-sm">
+                <li className={`flex items-center gap-2 ${pwChecks.upper ? 'text-vault-gold' : 'text-vault-500'}`}>
+                  <span className="h-4 w-4 shrink-0 rounded-sm bg-[color:var(--color-check-bg,transparent)] flex items-center justify-center">{pwChecks.upper ? '✓' : '•'}</span>
+                  <span>Uppercase letter</span>
+                </li>
+                <li className={`flex items-center gap-2 ${pwChecks.lower ? 'text-vault-gold' : 'text-vault-500'}`}>
+                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.lower ? '✓' : '•'}</span>
+                  <span>Lowercase letter</span>
+                </li>
+                <li className={`flex items-center gap-2 ${pwChecks.number ? 'text-vault-gold' : 'text-vault-500'}`}>
+                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.number ? '✓' : '•'}</span>
+                  <span>Number</span>
+                </li>
+                <li className={`flex items-center gap-2 ${pwChecks.special ? 'text-vault-gold' : 'text-vault-500'}`}>
+                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.special ? '✓' : '•'}</span>
+                  <span>Special character</span>
+                </li>
+                <li className={`flex items-center gap-2 ${pwChecks.length ? 'text-vault-gold' : 'text-vault-500'}`}>
+                  <span className="h-4 w-4 shrink-0 rounded-sm">{pwChecks.length ? '✓' : '•'}</span>
+                  <span>Minimum 8 characters</span>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <p className="mt-2 rounded-lg border border-vault-800 bg-vault-900/30 p-3 text-[11px] text-vault-400">
-               Password must contain:
-                  <br />
-                  • One uppercase letter (A-Z)
-                   <br />
-                      • One lowercase letter (a-z)
-                    <br />
-                    • One number (0-9)
-                    <br />
-                    • One special character (@$!%*?&)
-                    <br />
-                    • Minimum 8 characters
-                  </p>
-
-          {/* Confirm Password Input */}
-          <div className="space-y-1">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-vault-500">Confirm Password</label>
-            <div className="relative flex items-center rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 transition focus-within:border-vault-gold">
-              <ShieldCheck size={16} className="mr-3 text-vault-500" />
+          <div>
+            <label className="block text-xs font-semibold text-vault-400">Confirm Password</label>
+            <div className="relative mt-2">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
+                <ShieldCheck size={16} />
+              </div>
               <input
+                id="register-confirm"
                 type="password"
-                placeholder="Re-enter master password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-zinc-100 placeholder-vault-600 outline-none"
+                placeholder="Re-enter password"
+                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
               />
             </div>
           </div>
 
-          {/* Action Buttons */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-vault-gold/90 to-vault-gold border border-vault-gold/50 py-3 text-xs font-bold tracking-widest text-vault-950 uppercase shadow-lg transition duration-200 hover:brightness-110 disabled:opacity-50"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-vault-gold/95 to-vault-gold/80 py-3 text-sm font-semibold text-black shadow-lg hover:scale-[1.01] active:scale-100 transition-transform disabled:opacity-60"
           >
-            {isSubmitting ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-vault-950 border-t-transparent"></span>
-            ) : (
-              'Create Vault'
-            )}
+            {isSubmitting ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" /> : 'Create Vault'}
           </button>
         </form>
 
-        {/* Login Quicklink */}
-        <p className="mt-8 text-center text-xs text-vault-500">
-          Already have a vault?{' '}
+        <div className="mt-4 text-center text-sm text-vault-500">
+          Already have an account?{' '}
           <Link to="/login" className="font-semibold text-vault-gold hover:underline">
             Unlock it here
           </Link>
-        </p>
-      </div>
-    </div>
+        </div>
+      </motion.div>
+    </AuthLayout>
   );
 };
+
+export default Register;

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { KeyRound, Mail, AlertCircle } from 'lucide-react';
+import AuthLayout from '../components/AuthLayout';
+import { motion } from 'framer-motion';
 
 export const Login: React.FC = () => {
   const { login, error, clearError } = useAuth();
@@ -26,7 +28,7 @@ export const Login: React.FC = () => {
     try {
       await login(email, password);
       navigate('/');
-    } catch (err: any) {
+    } catch {
       // Handled by context
     } finally {
       setIsSubmitting(false);
@@ -34,20 +36,10 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 py-12">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-vault-800 bg-vault-950 p-8 shadow-2xl premium-glow animate-slide-up">
-        {/* Brand Head */}
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-vault-gold bg-gradient-to-br from-vault-900 to-vault-800 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-            <span className="font-serif text-2xl font-bold text-vault-gold">V</span>
-          </div>
-          <h2 className="font-serif text-2xl font-bold tracking-widest text-[#f4f4f5]">WELCOME BACK</h2>
-          <p className="mt-1 text-xs text-vault-500 uppercase tracking-widest">Unlock your private thoughts</p>
-        </div>
-
-        {/* Error Feedback */}
+    <AuthLayout title="Welcome Back" subtitle="Unlock your private vault">
+      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         {(error || localError) && (
-          <div className="mb-6 flex items-start gap-3 rounded-xl border border-vault-rose/20 bg-vault-rose/5 p-4 text-sm text-vault-rose">
+          <div role="alert" className="mb-4 flex items-start gap-3 rounded-lg border border-vault-rose/20 bg-vault-rose/5 p-3 text-sm text-vault-rose">
             <AlertCircle size={18} className="shrink-0 mt-0.5" />
             <div className="text-left">
               <p className="font-semibold">Unlock Failed</p>
@@ -56,74 +48,71 @@ export const Login: React.FC = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5 text-left">
-          {/* Email input */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-vault-500">Email Address</label>
-            <div className="relative flex items-center rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 transition focus-within:border-vault-gold">
-              <Mail size={16} className="mr-3 text-vault-500" />
-              <input
-                type="email"
-                id="login-email"
-                placeholder="pakshalshah08117@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-zinc-100 placeholder-vault-600 outline-none"
-              />
+        <form onSubmit={handleSubmit} className="space-y-4" aria-label="Login form">
+          <label className="block text-xs font-semibold text-vault-400">Email</label>
+          <div className="relative">
+            <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
+              <Mail size={16} />
             </div>
+            <input
+              id="login-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@domain.com"
+              className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
+            />
           </div>
 
-          {/* Password input */}
-          <div className="space-y-1.5">
+          <div>
             <div className="flex items-center justify-between">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-vault-500">Password</label>
-              <Link to="/reset-password" className="text-[10px] text-vault-500 hover:text-vault-gold transition">
-                Forgot password?
+              <label className="block text-xs font-semibold text-vault-400">Password</label>
+              <Link to="/reset-password" className="text-xs text-vault-500 hover:text-vault-gold">
+                Forgot?
               </Link>
             </div>
-            <div className="relative flex items-center rounded-xl border border-vault-800 bg-vault-900/40 px-3.5 py-2.5 transition focus-within:border-vault-gold">
-              <KeyRound size={16} className="mr-3 text-vault-500" />
+            <div className="relative mt-2">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-vault-500">
+                <KeyRound size={16} />
+              </div>
               <input
-                type={showPassword ? 'text' : 'password'}
                 id="login-password"
-                placeholder="••••••••••••"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flex-1 bg-transparent text-xs text-zinc-100 placeholder-vault-600 outline-none"
+                placeholder="••••••••"
+                className="w-full rounded-xl border border-vault-800 bg-transparent px-12 py-3 text-sm text-white placeholder-vault-600 focus:border-vault-gold focus:ring-2 focus:ring-vault-gold/20 outline-none"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(p => !p)}
-                className="ml-2 text-vault-500 hover:text-vault-300 transition text-[10px]"
+                onClick={() => setShowPassword((s) => !s)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-vault-500 hover:text-vault-gold"
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
           </div>
 
-          {/* Action Button */}
           <button
             type="submit"
-            id="login-submit"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-vault-gold/90 to-vault-gold border border-vault-gold/50 py-3 text-xs font-bold tracking-widest text-vault-950 uppercase shadow-lg transition duration-200 hover:brightness-110 disabled:opacity-50"
+            id="login-submit"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-vault-gold/95 to-vault-gold/80 py-3 text-sm font-semibold text-black shadow-lg hover:scale-[1.01] active:scale-100 transition-transform disabled:opacity-60"
           >
-            {isSubmitting ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-vault-950 border-t-transparent" />
-            ) : (
-              'Unlock Vault'
-            )}
+            {isSubmitting ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" /> : 'Unlock Vault'}
           </button>
         </form>
 
-        {/* Registration Quicklink */}
-        <p className="mt-8 text-center text-xs text-vault-500">
-          First time here?{' '}
+        <div className="mt-4 text-center text-sm text-vault-500">
+          New here?{' '}
           <Link to="/register" className="font-semibold text-vault-gold hover:underline">
-            Create your vault
+            Create a vault
           </Link>
-        </p>
-      </div>
-    </div>
+        </div>
+      </motion.div>
+    </AuthLayout>
   );
 };
+
+export default Login;
