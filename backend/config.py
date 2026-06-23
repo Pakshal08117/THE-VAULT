@@ -42,9 +42,10 @@ class Config:
     JWT_ERROR_MESSAGE_KEY: str = "message"
     JWT_BLACKLIST_ENABLED: bool = True
 
-    # --- CORS ---
-    CORS_ORIGINS: list = ["http://localhost:3000", "http://localhost:5173"]
-    CORS_SUPPORTS_CREDENTIALS: bool = True
+   # --- CORS ---
+    CORS_ORIGINS = ["http://localhost:3000","http://localhost:5173","https://the-vault-ashy-phi.vercel.app"]
+
+    CORS_SUPPORTS_CREDENTIALS = True
 
     # --- Rate Limiting ---
     RATELIMIT_DEFAULT: str = os.getenv("RATE_LIMIT_DEFAULT", "100/hour")
