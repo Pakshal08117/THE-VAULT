@@ -1,8 +1,10 @@
 // API Client for The Vault
 // Handles requests, authorization headers, and automated JWT token refresh logic.
 
-const BASE_URL = ''; // Empty string since Vite proxy handles /api routing
-
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://the-vault-n7mz.onrender.com';
+  
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
 
