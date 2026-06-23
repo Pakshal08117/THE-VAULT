@@ -71,10 +71,10 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ title, subtitle, childre
             </div>
 
             <div className="mt-8 w-full rounded-2xl bg-vault-900/20 p-6 text-sm text-vault-400">
-              <div className="relative h-40 w-full overflow-hidden rounded-xl bg-gradient-to-br from-vault-900/40 via-black/10 to-black/5">
-                {/* Decorative vault dial */}
-                <div className="absolute left-6 top-6 h-28 w-28 rounded-full border-2 border-vault-800/60 bg-black/30" />
-                <div className="absolute right-6 bottom-6 h-10 w-10 rounded-full border border-vault-gold/40 bg-vault-900/60" />
+              <div className="relative mx-auto flex h-40 w-40 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-vault-900/35 via-black/15 to-black/5 p-4 shadow-[0_25px_80px_rgba(0,0,0,0.25)]">
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.18),transparent_38%)]" />
+                <div className="absolute inset-0 rounded-full border border-vault-gold/20 shadow-[0_0_40px_rgba(212,175,55,0.12)]" />
+                <TextRingOrb />
               </div>
             </div>
           </motion.aside>
