@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import TextRingOrb from './TextRingOrb';
 
 type AuthLayoutProps = {
   title?: string;
