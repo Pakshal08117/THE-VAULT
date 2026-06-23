@@ -37,7 +37,7 @@ export const Register: React.FC = () => {
     try {
       await register(email, username, password);
       navigate('/');
-    } catch (err: any) {
+    } catch {
       // Handled by context
     } finally {
       setIsSubmitting(false);
@@ -112,6 +112,20 @@ export const Register: React.FC = () => {
               />
             </div>
           </div>
+
+          <p className="mt-2 rounded-lg border border-vault-800 bg-vault-900/30 p-3 text-[11px] text-vault-400">
+               Password must contain:
+                  <br />
+                  • One uppercase letter (A-Z)
+                   <br />
+                      • One lowercase letter (a-z)
+                    <br />
+                    • One number (0-9)
+                    <br />
+                    • One special character (@$!%*?&)
+                    <br />
+                    • Minimum 8 characters
+                  </p>
 
           {/* Confirm Password Input */}
           <div className="space-y-1">
